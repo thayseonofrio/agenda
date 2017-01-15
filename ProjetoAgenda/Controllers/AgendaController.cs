@@ -20,11 +20,19 @@ namespace ProjetoAgenda.Controllers
 
         public Compromissos PostCompromisso(Compromissos item)
         {
+            
             return repository.Add(item);
+        }
+
+        public Compromissos GetCompromisso(int id)
+        {
+
+            return repository.Get(id);
         }
 
         public IEnumerable PutCompromisso(int id, Compromissos compromisso)
         {
+          
             compromisso.ID = id;
             if (repository.Update(compromisso))
             {

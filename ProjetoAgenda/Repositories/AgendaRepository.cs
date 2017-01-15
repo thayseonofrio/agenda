@@ -49,6 +49,8 @@ namespace ProjetoAgenda.Repositories
                 compromisso.Titulo = item.Titulo;
                 compromisso.DataInicio = item.DataInicio;
                 compromisso.DataFinal = item.DataFinal;
+                compromisso.HorarioInicio = item.HorarioInicio;
+                compromisso.HorarioFinal = item.HorarioFinal;
                 compromisso.Detalhes = item.Detalhes;
                 db.SaveChanges();
             } else

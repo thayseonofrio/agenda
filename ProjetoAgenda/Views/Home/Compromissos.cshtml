@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "Agenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts {
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/App/app.js"></script>
+    <script src="~/App/agendaCtrl.js"></script>
+    <script src="~/App/agendaService.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/angular-filter-master/dist/angular-filter.js"></script>
+    <script src="~/Scripts/scripts.js"></script>
+}
+<div ng-app="app" id="body">
+    <div ng-controller="agendaCtrl">
+        <h2>AngularJS CRUD Operations with MVC5 WebAPI</h2>
+
+        <h3>List of Compromissos</h3>
+
+        <ul>
+            <li ng-repeat="(key, value) in dadosAgenda |orderBy: 'DataInicio' | groupBy: 'DataParaComparacao' track by $index" >
+                Dia: {{ key  }}
+                
+                    <table ng-cloak>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>DataInicio</th>
+                                <th>DataFinal</th>
+                                <th>Horário Inicio</th>
+                                <th>Horário final</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="items in value | orderBy: 'HorarioInicio'">
+                                <td>{{items.Titulo}}</td>
+                                <td>{{items.DataInicio | date : "dd/MM/y" }}</td>
+                                <td>{{items.DataFinal | date : "dd/MM/y"  }}</td>
+                                <td>{{items.HorarioInicio | date : "shortTime"}}</td>
+                                <td>{{items.HorarioFinal |  date : "shortTime"}}</td>
+                                <td>
+                                    <button ng-model="$scope.Compromisso" ng-click="edit(items.ID)"> Edit </button>
+                                    <button ng-model="$scope.Compromisso" ng-click="delete(items.ID)">Delete</button>
+                                </td>
+
+                                @*<td>
+                <button ng-model="$scope.Compromisso"
+                        ng-click="edit(dadosAgenda[$index])">
+                    Edit
+
+                </button>
+                <button ng-click="delete($index)">Delete</button>
+
+            </td>*@
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                    
+              
+            </li>
+        </ul>
+
+        <label ng-bind="total()"></label>
+        <br />
+        <div style="border-top: solid 2px #282828; width: 430px; height: 10px"> </div>
+
+        <div ng-show="Compromisso.ID != '' ">
+            <div>
+                <h2>Update Compromisso</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">ID</label>
+                <input type="text" data-ng-model="Compromisso.ID" />
+            </div>
+            <div>
+                <label for="name">Titulo</label>
+                <input type="text" data-ng-model="Compromisso.Titulo" />
+            </div>
+
+            <div>
+                <label for="datainicio">Data Inicio</label>
+
+                <input type="date" data-ng-model="Compromisso.DataInicio" />
+            </div>
+
+            <div>
+                <label for="datafinal">Data Final</label>
+                <input type="date" data-ng-model="Compromisso.DataFinal" />
+            </div>
+            <div>
+                <label for="horarioinicio">Horário Inicio</label>
+                <input type="time" id="exampleInput" name="input" str-to-time="" data-ng-model="Compromisso.HorarioInicio"
+                       required />
+
+            </div>
+            <div>
+                <label for="horariofinal">Horário Final</label>
+
+                <input type="time" id="exampleInput" name="input" str-to-time="" data-ng-model="Compromisso.HorarioFinal"
+                       required />
+            </div>
+            <div>
+                <label for="detalhes">Detalhes</label>
+                <input type="text" data-ng-model="Compromisso.Detalhes" />
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="update()">Update</button>
+                <button data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+        <div ng-hide="Compromisso.ID != '' ">
+            <div>
+                <h2>Add New Product</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">ID</label>
+                <input type="text" data-ng-model="Compromisso.ID" />
+            </div>
+            <div>
+                <label for="name">Titulo</label>
+                <input type="text" data-ng-model="Compromisso.Titulo" />
+            </div>
+
+            <div>
+                <label for="datainicio">Data Inicio</label>
+                <input type="date" data-ng-model="Compromisso.DataInicio" />
+            </div>
+
+            <div>
+                <label for="datafinal">Data Final</label>
+                <input type="date" data-ng-model="Compromisso.DataFinal" />
+            </div>
+            <div>
+                <label for="horarioinicio">Horário Inicio</label>
+                <input type="time" str-to-time="" id="exampleInput" name="input" data-ng-model="Compromisso.HorarioInicio"
+                       required />
+
+            </div>
+            <div>
+                <label for="horariofinal">Horário Final</label>
+                <input type="time" str-to-time="" id="exampleInput" name="input" data-ng-model="Compromisso.HorarioFinal"
+                       required />
+            </div>
+            <div>
+                <label for="price">Detalhes</label>
+                <input type="text" data-ng-model="Compromisso.Detalhes" />
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="save()">Save</button>
+                <button data-ng-click="clear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,38 +4,41 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AgendaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AgendaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Compromissos">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Titulo" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="DataInicio" Type="datetime" Nullable="false" />
-          <Property Name="DataFinal" Type="datetime" Nullable="false" />
+          <Property Name="Titulo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Detalhes" Type="nvarchar" MaxLength="700" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DataInicio" Type="date" Nullable="false" />
+          <Property Name="DataFinal" Type="date" Nullable="false" />
+          <Property Name="HorarioInicio" Type="time" Precision="7" Nullable="false" />
+          <Property Name="HorarioFinal" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityContainer Name="AgendaModelStoreContainer">
           <EntitySet Name="Compromissos" EntityType="Self.Compromissos" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AgendaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AgendaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Compromissos" EntityType="AgendaModel.Compromissos" />
+        </EntityContainer>
         <EntityType Name="Compromissos">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DataFinal" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Titulo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Detalhes" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DataFinal" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HorarioInicio" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="HorarioFinal" Type="Time" Nullable="false" Precision="7" />
         </EntityType>
-        <EntityContainer Name="AgendaEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Compromissos" EntityType="Self.Compromissos" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -45,11 +48,13 @@
           <EntitySetMapping Name="Compromissos">
             <EntityTypeMapping TypeName="AgendaModel.Compromissos">
               <MappingFragment StoreEntitySet="Compromissos">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
-                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="HorarioFinal" ColumnName="HorarioFinal" />
+                <ScalarProperty Name="HorarioInicio" ColumnName="HorarioInicio" />
                 <ScalarProperty Name="DataFinal" ColumnName="DataFinal" />
+                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Detalhes" ColumnName="Detalhes" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -14,10 +14,12 @@ namespace ProjetoAgenda.Models
     
     public partial class Compromissos
     {
-        public int ID { get; set; }
         public string Titulo { get; set; }
+        public string Detalhes { get; set; }
+        public int ID { get; set; }
         public System.DateTime DataInicio { get; set; }
         public System.DateTime DataFinal { get; set; }
-        public string Detalhes { get; set; }
+        public System.TimeSpan HorarioInicio { get; set; }
+        public System.TimeSpan HorarioFinal { get; set; }
     }
 }
