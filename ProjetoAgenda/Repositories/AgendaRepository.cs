@@ -9,6 +9,8 @@ namespace ProjetoAgenda.Repositories
     public class AgendaRepository : IAgendaRepository
     {
         AgendaEntities db = new AgendaEntities();
+
+
         public Compromissos Add(Compromissos item)
         {
             if(item != null)
@@ -38,7 +40,7 @@ namespace ProjetoAgenda.Repositories
 
         public IEnumerable<Compromissos> GetAll()
         {
-            return db.Compromissos;
+            return db.Compromissos.ToList();
         }
 
         public bool Update(Compromissos item)

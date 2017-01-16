@@ -387,6 +387,8 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\AngularUI\ui-router.js" />
+    <Content Include="Scripts\AngularUI\ui-router.min.js" />
     <Content Include="Scripts\angular\angular.js" />
     <Content Include="Scripts\angular\angular.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -1250,8 +1252,12 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Compromissos.cshtml" />
-    <Content Include="Views\Home\Adicionar.cshtml" />
+    <Content Include="Views\Shared\Compromissos-antigo.cshtml" />
+    <Content Include="Views\Shared\Adicionar.cshtml" />
+    <Content Include="Views\Shared\_formulario.cshtml" />
+    <Content Include="Views\Shared\Alterar.cshtml" />
+    <Content Include="Views\Home\index.cshtml" />
+    <Content Include="Views\Shared\Compromissos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />

@@ -9,7 +9,7 @@ namespace ProjetoAgenda.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Compromissos()
+        public ActionResult Index()
         {
             return View();
         }

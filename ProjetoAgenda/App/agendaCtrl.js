@@ -1,6 +1,8 @@
 ﻿// faz a injeção de dependência do service (AgendaService) e faz as operações de CRUD
 app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
-
+    $scope.mostrarDetalhes = false;
+    $scope.adicionar = false;
+    $scope.alterar = false;
     $scope.dadosAgenda = null;
     AgendaService.GetAllDados().then(function (d) {
         $scope.dadosAgenda = d.data;
@@ -14,6 +16,8 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
     }, function () {
         alert('Erro ao buscar os dados'); // se der errado, emite alerta --trocar depois
     });
+
+    
 
     // Calcula o número de compromissos na agenda
     $scope.total = function () {
@@ -47,10 +51,14 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
         $scope.Compromisso.Detalhes = '';
     }
 
+    $scope.adicionarCompromisso = function () {
+        $scope.adicionar = !$scope.adicionar;
+    }
+
     //Adicionar um compromisso novo
     $scope.save = function () {
         if ($scope.Compromisso.Titulo != "" && $scope.Compromisso.DataInicio != "" && $scope.Compromisso.DataFinal != "" && $scope.Compromisso.HorarioInicio != "" && $scope.Compromisso.HorarioFinal != "") {
-           
+            
             
             $http({
                 method: 'POST',
@@ -62,6 +70,17 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
                 compromisso.DataParaComparacao = (new Date(compromisso.DataInicio)).toLocaleDateString();
                 
                 $scope.dadosAgenda.push(response.data);
+                $scope.dadosAgenda = null;
+                AgendaService.GetAllDados().then(function (d) {
+                    $scope.dadosAgenda = d.data;
+                    angular.forEach($scope.dadosAgenda, function (value, key) {
+                        $scope.dadosAgenda[key].DataFinal = new Date(value.DataFinal);
+                        $scope.dadosAgenda[key].DataInicio = new Date(value.DataInicio);
+                        $scope.dadosAgenda[key].DataParaComparacao = value.DataInicio.toLocaleDateString();
+                    });
+                }, function () {
+                    alert('Erro ao buscar os dados'); // se der errado, emite alerta --trocar depois
+                });
                 $scope.clear();
                 alert("Compromisso adicionado com sucesso");
             }, function errorCallback(response) {
@@ -78,7 +97,27 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
     //$scope.edit = function (data) {
     //    $scope.Compromisso = { ID: data.ID, Titulo: data.Titulo, DataInicio: new Date(data.DataInicio), DataFinal: new Date(data.DataFinal), HorarioInicio: data.HorarioInicio, HorarioFinal: data.HorarioFinal, Detalhes: data.Detalhes };
     //}
+
+    $scope.details = function (id) {
+        $scope.clear();
+        $http({
+            method: 'GET',
+            url: 'api/Agenda/GetCompromisso/' + id,
+        }).then(function successCallback(response) {
+            $scope.Compromisso = response.data;
+            $scope.Compromisso.DataInicio = new Date(response.data.DataInicio);
+            
+            $scope.Compromisso.DataFinal = new Date(response.data.DataFinal);
+            $scope.mostrarDetalhes = !$scope.mostrarDetalhes;
+            //$scope.Compromisso.DataParaComparacao = response.data.DataInicio.toLocaleDateString();
+
+        }, function errorCallback(response) {
+            alert("Erro : " + response.data.ExceptionMessage);
+        });
+    }
+
     $scope.edit = function (id) {
+        $scope.alterar = !$scope.alterar;
         $http({
             method: 'GET',
             url: 'api/Agenda/GetCompromisso/' + id,
@@ -97,6 +136,8 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
     // Cancelar
     $scope.cancel = function () {
         $scope.clear();
+        $scope.alterar = false;
+        $scope.adicionar = false;
     }
 
     //PUT para editar o compromisso
@@ -109,9 +150,20 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
                 data: $scope.Compromisso
             }).then(function successCallback(response) {
                 $scope.dadosAgenda = response.data;
-                $scope.dadosAgenda.DataInicio = new Date(response.data.DataInicio);
-                $scope.dadosAgenda.DataFinal = new Date(response.data.DataFinal);
-                $scope.dadosAgenda.DataParaComparacao = response.data.DataInicio.toLocaleDateString();
+                //$scope.dadosAgenda.DataInicio = new Date(response.data.DataInicio);
+                //$scope.dadosAgenda.DataFinal = new Date(response.data.DataFinal);
+                //$scope.dadosAgenda.DataParaComparacao = response.data.DataInicio.toLocaleDateString();
+                //$scope.dadosAgenda = null;
+                AgendaService.GetAllDados().then(function (d) {
+                    $scope.dadosAgenda = d.data;
+                    angular.forEach($scope.dadosAgenda, function (value, key) {
+                        $scope.dadosAgenda[key].DataFinal = new Date(value.DataFinal);
+                        $scope.dadosAgenda[key].DataInicio = new Date(value.DataInicio);
+                        $scope.dadosAgenda[key].DataParaComparacao = value.DataInicio.toLocaleDateString();
+                    });
+                }, function () {
+                    alert('Erro ao buscar os dados'); // se der errado, emite alerta --trocar depois
+                });
                 $scope.clear();
                 alert("Compromisso alterado com sucesso!");
             }, function errorCallback(response) {
@@ -123,18 +175,7 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
         }
     };
 
-    // Deletar detalhes do compromisso
-    //$scope.delete = function (index) {
-    //    $http({
-    //        method: 'DELETE',
-    //        url: 'api/Agenda/DeleteCompromisso/' + $scope.dadosAgenda[index].ID,
-    //    }).then(function successCallback(response) {
-    //        $scope.dadosAgenda.splice(index, 1);
-    //        alert("Compromisso deletado com sucesso");
-    //    }, function errorCallback(response) {
-    //        alert("Erro : " + response.data.ExceptionMessage);
-    //    });
-    //};
+    
     $scope.delete = function (id) {
         $http({
             method: 'DELETE',
@@ -158,3 +199,5 @@ app.controller('agendaCtrl', function ($scope, $http, AgendaService) {
     };
 
 });
+
+

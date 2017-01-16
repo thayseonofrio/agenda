@@ -16,6 +16,7 @@
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/AngularUI/ui-router.min.js"></script>
 <script src="~/Scripts/angular-filter-master/dist/angular-filter.js"></script>
     <script src="~/Scripts/scripts.js"></script>
 }
@@ -50,17 +51,9 @@
                                 <td>
                                     <button ng-model="$scope.Compromisso" ng-click="edit(items.ID)"> Edit </button>
                                     <button ng-model="$scope.Compromisso" ng-click="delete(items.ID)">Delete</button>
+                                    <button ng-model="$scope.Compromisso" ng-click="details(items.ID)">Detalhes</button>
                                 </td>
 
-                                @*<td>
-                <button ng-model="$scope.Compromisso"
-                        ng-click="edit(dadosAgenda[$index])">
-                    Edit
-
-                </button>
-                <button ng-click="delete($index)">Delete</button>
-
-            </td>*@
                             </tr>
                         </tbody>
                         
@@ -78,6 +71,8 @@
             <div>
                 <h2>Update Compromisso</h2>
             </div>
+          
+       
             <div hidden="hidden">
                 <label for="id">ID</label>
                 <input type="text" data-ng-model="Compromisso.ID" />

@@ -13,9 +13,11 @@ namespace ProjetoAgenda.Controllers
     public class AgendaController : ApiController
     {
         static readonly IAgendaRepository repository = new AgendaRepository();
+
+        
         public IEnumerable GetAllCompromissos()
         {
-            return repository.GetAll();
+            return repository.GetAll().ToList();
         }
 
         public Compromissos PostCompromisso(Compromissos item)
@@ -36,7 +38,7 @@ namespace ProjetoAgenda.Controllers
             compromisso.ID = id;
             if (repository.Update(compromisso))
             {
-                return repository.GetAll();
+                return repository.GetAll().ToList();
             }
             else
             {

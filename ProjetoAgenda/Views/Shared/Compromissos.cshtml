@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Compromissos";
+}
+
+<h3>List of Compromissos</h3>
+<div>
+    <ul>
+        <li ng-repeat="(key, value) in dadosAgenda |orderBy: 'DataInicio' | groupBy: 'DataParaComparacao' track by $index">
+            Dia: {{ key  }}
+
+            <table ng-cloak>
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>DataInicio</th>
+                        <th>DataFinal</th>
+                        <th>Horário Inicio</th>
+                        <th>Horário final</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="items in value | orderBy: 'HorarioInicio'" ng-click="toggle()">
+                        <td>{{items.Titulo}}</td>
+                        <td>{{items.DataInicio | date : "dd/MM/y" }}</td>
+                        <td>{{items.DataFinal | date : "dd/MM/y"  }}</td>
+                        <td>{{items.HorarioInicio | date : "shortTime"}}</td>
+                        <td>{{items.HorarioFinal |  date : "shortTime"}}</td>
+                        <td>
+                            @*<button ng-model="$scope.Compromisso" ng-click="edit(items.ID)"> Edit </button>
+                            <button ng-model="$scope.Compromisso" ng-click="delete(items.ID)">Delete</button>*@
+                            <button ng-model="$scope.Compromisso" ng-click="details(items.ID)">Detalhes</button>
+
+                        </td>
+                        
+                    </tr>
+                    
+                </tbody>
+
+            </table>
+
+            
+        </li>
+    </ul>
+
+    
+
+    <label ng-bind="total()"></label>
+    <br />
+    <div style="border-top: solid 2px #282828; width: 430px; height: 10px"> </div>
+
+</div>
+
+<div ng-show="mostrarDetalhes">
+    <p>{{Compromisso.Titulo}}</p>
+    <p>{{Compromisso.DataInicio | date : "dd/MM/y" }}</p>
+    <p>{{Compromisso.DataFinal | date : "dd/MM/y"  }}</p>
+    <p>{{Compromisso.HorarioInicio | date : "shortTime"}}</p>
+    <p>{{Compromisso.HorarioFinal |  date : "shortTime"}}</p>
+    <p>{{Compromisso.Detalhes}}</p>
+    <button ng-model="$scope.Compromisso" ng-click="edit(Compromisso.ID)"> Edit </button>
+    <button ng-model="$scope.Compromisso" ng-click="delete(Compromisso.ID)">Delete</button>
+</div>

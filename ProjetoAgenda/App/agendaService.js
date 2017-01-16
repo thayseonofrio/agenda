@@ -2,7 +2,7 @@
 app.factory('AgendaService', function ($http) {
     var fac = {};
     fac.GetAllDados = function () {
-        return $http.get('api/Agenda/GetAllCompromissos');
+        return $http.get(window.location.protocol + "//" + window.location.host + '/' + 'api/Agenda/GetAllCompromissos');
     }
     return fac;
 });
